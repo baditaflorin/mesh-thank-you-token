@@ -1,14 +1,9 @@
-/* App-local styles. Mesh chrome (settings drawer, self-ref bar) is provided by
- * @baditaflorin/mesh-common/styles.css imported in main.tsx. */
-
 :root {
   color-scheme: dark;
 }
-
 * {
   box-sizing: border-box;
 }
-
 html,
 body,
 #root {
@@ -19,33 +14,50 @@ body,
   background: var(--mesh-bg);
   color: var(--mesh-fg);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
-  -webkit-tap-highlight-color: transparent;
 }
-
-.feature-placeholder {
-  padding: 6rem 1.5rem 2rem;
-  text-align: center;
+.tt-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 1rem;
+  gap: 0.3rem;
 }
-
-.feature-placeholder h1 {
-  font-size: 1.6rem;
-  margin: 0;
-  color: var(--mesh-accent);
+.tt-list li {
+  display: grid;
+  grid-template-columns: 2.2rem 1fr auto;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.45rem 0.7rem;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 0.35rem;
 }
-
-.feature-placeholder p {
-  max-width: 32rem;
-  margin: 0;
-  opacity: 0.85;
-  line-height: 1.5;
+.tt-list li.is-me {
+  border: 1px solid var(--mesh-accent);
 }
-
-.feature-status {
-  font-size: 0.85rem;
-  opacity: 0.6;
+.tt-rank {
+  opacity: 0.55;
   font-variant-numeric: tabular-nums;
+}
+.tt-score {
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+.tt-feed {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.88rem;
+}
+.tt-feed li {
+  padding: 0.3rem 0.6rem;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 0.3rem;
+}
+.tt-feed em {
+  color: var(--mesh-accent);
+  font-style: normal;
 }
