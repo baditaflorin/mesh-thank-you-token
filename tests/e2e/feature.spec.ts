@@ -19,7 +19,7 @@ test("A thanks B → B shows in leaderboard with received=1", async ({ browser, 
     await a.getByRole("button", { name: "use", exact: true }).click();
 
     await expect(b.locator(".tt-list")).toContainText("bob");
-    await expect(b.locator(".tt-score")).toContainText("received 1");
+    await expect(b.locator(".tt-list li").first()).toContainText("received 1");
   } finally {
     await cleanup();
   }
