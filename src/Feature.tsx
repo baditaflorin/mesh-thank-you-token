@@ -4,6 +4,7 @@ import {
   makeScanPayload,
   type MeshConfig,
   type YRoom,
+  MeshNameInput,
 } from "@baditaflorin/mesh-common";
 
 type Props = { room: YRoom | null; config: MeshConfig };
@@ -105,10 +106,10 @@ function Body({ room, config }: { room: YRoom; config: MeshConfig }) {
         </p>
       </header>
 
-      <input
+      <MeshNameInput
         className="viral-name"
         value={name}
-        onChange={(e) => setName(e.target.value)}
+        onChange={setName}
         placeholder="your name"
         maxLength={48}
       />
