@@ -30,6 +30,7 @@ function Body({ room, config }: { room: YRoom; config: MeshConfig }) {
     () => localStorage.getItem(NAME_KEY(config.storagePrefix)) ?? "",
   );
   const [reason, setReason] = useState("");
+  const [notice, setNotice] = useState("");
   const [, rerender] = useState(0);
 
   useEffect(() => {
@@ -58,17 +59,40 @@ function Body({ room, config }: { room: YRoom; config: MeshConfig }) {
 
   const tokenList = tokens.toArray();
   const today = new Date().toISOString().slice(0, 10);
-  const myToday = tokenList.filter(
-    (t) => t.from === room.peerId && new Date(t.ts).toISOString().slice(0, 10) === today,
-  );
+  const isToday = (ts: number) => new Date(ts).toISOString().slice(0, 10) === today;
+  const myToday = tokenList.filter((t) => t.from === room.peerId && isToday(t.ts));
   const DAILY_LIMIT = 3;
   const remaining = Math.max(0, DAILY_LIMIT - myToday.length);
 
+  // Already thanked this person today? Each recipient can be thanked at most
+  // once per giver per day — prevents double-spend (repeat scans of the same
+  // QR inflating the leaderboard).
+  const alreadyThankedToday = (toPeerId: string) =>
+    tokenList.some((t) => t.from === room.peerId && t.to === toPeerId && isToday(t.ts));
+
   const give = (toPeerId: string, toName?: string) => {
-    if (!name.trim() || toPeerId === room.peerId || remaining === 0) return;
+    if (!name.trim()) {
+      setNotice("set your name first");
+      return;
+    }
+    // self-give guard
+    if (toPeerId === room.peerId) {
+      setNotice("you can't thank yourself");
+      return;
+    }
+    // double-spend guard: one token per recipient per day
+    if (alreadyThankedToday(toPeerId)) {
+      setNotice(`already thanked ${names.get(toPeerId) ?? "them"} today`);
+      return;
+    }
+    if (remaining === 0) {
+      setNotice("out of tokens for today");
+      return;
+    }
     if (toName) names.set(toPeerId, toName);
     tokens.push([{ from: room.peerId, to: toPeerId, ts: Date.now(), reason: reason.trim() }]);
     setReason("");
+    setNotice("");
   };
 
   // leaderboard: received - given (positive = net thanked)
@@ -128,6 +152,12 @@ function Body({ room, config }: { room: YRoom; config: MeshConfig }) {
         scanLabel={remaining === 0 ? "out of tokens for today" : "scan to send a thank-you"}
         onScan={(parsed) => give(parsed.peerId, parsed.extra ?? undefined)}
       />
+
+      {notice && (
+        <p className="tt-notice" role="status">
+          {notice}
+        </p>
+      )}
 
       <section>
         <h2 className="viral-section-title">gratitude leaderboard</h2>

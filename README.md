@@ -1,7 +1,7 @@
 # mesh-thank-you-token
 
 [![pages](https://img.shields.io/badge/live-baditaflorin.github.io%2Fmesh-thank-you-token-facc15)](https://baditaflorin.github.io/mesh-thank-you-token/)
-[![version](https://img.shields.io/badge/version-0.1.0-blue)](https://github.com/baditaflorin/mesh-thank-you-token/blob/main/package.json)
+[![version](https://img.shields.io/badge/version-0.1.1-blue)](https://github.com/baditaflorin/mesh-thank-you-token/blob/main/package.json)
 [![license](https://img.shields.io/badge/license-MIT-green)](./LICENSE)
 
 > Give a thank-you token by scanning someone's QR — gratitude leaderboard
